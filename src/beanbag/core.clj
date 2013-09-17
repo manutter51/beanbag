@@ -3,7 +3,7 @@
 (defn
   ^{:doc "Return function result with a status flag indicating the function returned
 successfully."}
-  result [data]
+  return-result [data]
   [:ok data])
 
 (defn
@@ -20,7 +20,7 @@ successfully."}
 succeeded. Whatever you pass in as the data-var will be set to the function result
 if the call is successful, or to an error message if the call fails. Returns the
 function result if the function succeeds, or nil if the function fails."}
-  with-result [data-var the-fn & body]
+  when-result [data-var the-fn & body]
   `(let [[status-key# ~data-var] ~the-fn]
      (condp = status-key#
        ~@body)
