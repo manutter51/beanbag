@@ -37,11 +37,14 @@ is the success status).
     
     (careful-fn some-fn-that-might-fail 2) ; => prints 6
     (careful-fn some-fn-that-might-fail 3) ; => prints "I only like even numbers"
-    (careful-fn other-fn nil) ;              => prints "Arg was nil, must not be ready yet"
+    (careful-fn other-fn nil) ;              => prints "Fn wasn't ready, try again later"
     (careful-fn other-fn 4) ;                => prints 5
 
 The when-result block returns the your function's result if the function
 succeeds, or nil if the function fails.
+
+Footnote: Use the (beanbag? coll) predicate to check whether a given data structure
+is a beanbag or not.
 
 ## License
 
