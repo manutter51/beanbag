@@ -49,3 +49,5 @@ Copyright © 2013 Mark Nutter
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+[![Build Status](https://travis-ci.org/manutter51/beanbag.png)](https://travis-ci.org/manutter51/beanbag.png)
