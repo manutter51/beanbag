@@ -2,7 +2,6 @@
   (:require [midje.sweet :refer :all]
             [beanbag.core :refer :all]))
 
-
 (defn always-fails []
   (toss "Function failed"))
 
@@ -43,3 +42,13 @@
                      :fail (reset! some-state "fail")
                      :not-ready (reset! some-state "not-ready"))
         @some-state => "ok-ignore"))
+
+(fact "Beanbags have metadata identifying them as beanbags"
+      (beanbag? [:any :vector])
+      => nil
+
+      (beanbag? (return-result :ok))
+      => truthy
+
+      (beanbag? (toss "Sample failure"))
+      => truthy)
