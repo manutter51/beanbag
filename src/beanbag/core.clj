@@ -8,24 +8,31 @@
     (or (= keyname "ok")
         (starts-with-ok keyname))))
 
-(defn return-result
-  "Return function result with a status flag indicating the function returned successfully."
+(defn ok
+  "Return function result with a status key indicating the function returned successfully."
   ([] (with-meta [:ok] {::bb true}))
   ([data]
      (with-meta [:ok data] {::bb true}))
   ([custom-key data]
-     (when (not (starts-with-ok (name custom-key)))
-       (throw (Exception. "Status key must start with \":ok-\".")))
+     (when (not (successful? custom-key))
+       (throw (Exception. "Custom status key must start with \":ok-\".")))
      (with-meta [custom-key data] {::bb true})))
 
-(defn toss
-  "Report an error condition. Default status key is :fail. Status key must not begin with :ok."
-  ([] (toss :fail "Failed"))
-  ([error-message] (toss :fail error-message))
-  ([status-key error-message]
-     (when (successful? status-key)
-       (throw (Exception. "Cannot use toss with a status key that starts with :ok")))
-     (with-meta [status-key error-message] {::bb true})))
+(defn fail
+  "Report an error condition. Default status key is :fail. Custom status key must not begin with :ok."
+  ([] (fail :fail "Failed"))
+  ([error-message] (fail :fail error-message))
+  ([custom-key error-message]
+     (when (successful? custom-key)
+       (throw (Exception. "Cannot use fail with a status key that starts with :ok")))
+     (with-meta [custom-key error-message] {::bb true})))
+
+(defn skip
+  "Report an unhandled condition. Default status key is :skipped. Status key must not begin with :ok"
+  ([message]
+     (fail :skip message))
+  ([custom-key message]
+     (fail custom-key message)))
 
 (defmacro when-result
   "Call a function and then branch based on whether or not the function call

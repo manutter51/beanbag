@@ -3,25 +3,28 @@
             [beanbag.core :refer :all]))
 
 (defn always-fails []
-  (toss "Function failed"))
+  (fail "Function failed"))
 
 (defn fails-with-custom []
-  (toss :not-ready "Function not ready"))
+  (fail :not-ready "Function not ready"))
 
 (defn always-succeeds []
-  (return-result {:data "Some data."}))
+  (ok {:data "Some data."}))
 
 (defn succeeds-with-condition []
-  (return-result :ok-ignore "Some data you can ignore."))
+  (ok :ok-ignore "Some data you can ignore."))
 
-(fact "about default toss"
+(defn never-handled []
+  (skip "Nothing happened"))
+
+(fact "about default fail"
       (let [some-state (atom nil)]
         (when-result r (always-fails)
                      :ok (reset! some-state "ok")
                      :fail (reset! some-state "fail"))
         @some-state => "fail"))
 
-(fact "about custom toss"
+(fact "about custom fail"
       (let [some-state (atom nil)]
         (when-result r (fails-with-custom)
                      :ok (reset! some-state "ok")
@@ -29,7 +32,7 @@
                      :not-ready (reset! some-state "not-ready"))
         @some-state => "not-ready"))
 
-(facts "about return-result"
+(facts "about ok"
       (let [some-state (atom nil)]
         (when-result r (always-succeeds)
                      :ok (reset! some-state "ok")
@@ -43,12 +46,20 @@
                      :not-ready (reset! some-state "not-ready"))
         @some-state => "ok-ignore"))
 
+(fact "about skip"
+      (let [some-state (atom nil)]
+        (when-result r (never-handled)
+                     :ok (reset! some-state "ok")
+                     :fail (reset! some-state "fail")
+                     :skip (reset! some-state "skipped"))
+        @some-state => "skipped"))
+
 (fact "Beanbags have metadata identifying them as beanbags"
       (beanbag? [:any :vector])
       => nil
 
-      (beanbag? (return-result :ok))
+      (beanbag? (ok :ok))
       => truthy
 
-      (beanbag? (toss "Sample failure"))
+      (beanbag? (fail "Sample failure"))
       => truthy)
