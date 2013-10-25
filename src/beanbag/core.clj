@@ -28,7 +28,7 @@
      (with-meta [custom-key error-message] {::bb true})))
 
 (defn skip
-  "Report an unhandled condition. Default status key is :skipped. Status key must not begin with :ok"
+  "Report an unhandled condition. Default status key is :skip. Status key must not begin with :ok"
   ([message]
      (fail :skip message))
   ([custom-key message]
