@@ -1,4 +1,4 @@
-(defproject beanbag "0.2.0-SNAPSHOT"
+(defproject beanbag "0.2.1-SNAPSHOT"
   :description "Like try/catch/throw, but not as hardball."
   ;:url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

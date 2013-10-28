@@ -4,9 +4,10 @@
   (re-matches #"^ok-(.*)" keyname))
 
 (defn successful? [status-key]
-  (let [keyname (name status-key)]
-    (or (= keyname "ok")
-        (starts-with-ok keyname))))
+  (if (keyword? status-key)
+    (let [keyname (name status-key)]
+      (or (= keyname "ok")
+          (starts-with-ok keyname)))))
 
 (defn ok
   "Return function result with a status key indicating the function returned successfully."
