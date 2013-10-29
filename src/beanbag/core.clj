@@ -35,7 +35,7 @@
   ([custom-key message]
      (fail custom-key message)))
 
-(defmacro when-result
+(defmacro cond-result
   "Call a function and then branch based on whether or not the function call
 succeeded. Whatever you pass in as the data-var will be set to the function result
 if the call is successful, or to an error message if the call fails. Returns the

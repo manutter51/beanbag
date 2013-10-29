@@ -19,14 +19,14 @@
 
 (fact "about default fail"
       (let [some-state (atom nil)]
-        (when-result r (always-fails)
+        (cond-result r (always-fails)
                      :ok (reset! some-state "ok")
                      :fail (reset! some-state "fail"))
         @some-state => "fail"))
 
 (fact "about custom fail"
       (let [some-state (atom nil)]
-        (when-result r (fails-with-custom)
+        (cond-result r (fails-with-custom)
                      :ok (reset! some-state "ok")
                      :fail (reset! some-state "fail")
                      :not-ready (reset! some-state "not-ready"))
@@ -34,12 +34,12 @@
 
 (facts "about ok"
       (let [some-state (atom nil)]
-        (when-result r (always-succeeds)
+        (cond-result r (always-succeeds)
                      :ok (reset! some-state "ok")
                      :fail (reset! some-state "fail")
                      :not-ready (reset! some-state "not-ready"))
         @some-state => "ok"
-        (when-result r (succeeds-with-condition)
+        (cond-result r (succeeds-with-condition)
                      :ok (reset! some-state "ok")
                      :ok-ignore (reset! some-state "ok-ignore")
                      :fail (reset! some-state "fail")
@@ -48,7 +48,7 @@
 
 (fact "about skip"
       (let [some-state (atom nil)]
-        (when-result r (never-handled)
+        (cond-result r (never-handled)
                      :ok (reset! some-state "ok")
                      :fail (reset! some-state "fail")
                      :skip (reset! some-state "skipped"))
