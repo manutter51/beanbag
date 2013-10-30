@@ -37,15 +37,21 @@
 
 (defmacro cond-result
   "Call a function and then branch based on whether or not the function call
-succeeded. Whatever you pass in as the data-var will be set to the function result
-if the call is successful, or to an error message if the call fails. Returns the
-function result if the function succeeds, or nil if the function fails."
+succeeded. The data returned by the function is bound to the symbol you pass
+in as the data-var, and branching is controlled by the status key returned
+in the beanbag.
+
+Example:
+
+    (cond-result my-data (some-fn 42)
+      :ok (println \"Successful, answer was \" my-data)
+      :fail (println \"Unable to determine answer, error message was: \" my-data)
+      :skip (println \"Answer unclear, please try again later. Reason: \" my-data)
+      (println \"Unexpected result status!? \" my-data)"
   [data-var the-fn & body]
   `(let [[status-key# ~data-var] ~the-fn]
      (condp = status-key#
-       ~@body)
-     (when (successful? status-key#)
-       ~data-var)))
+       ~@body)))
 
 (defn beanbag? [v]
   (if-let [m (meta v)]
