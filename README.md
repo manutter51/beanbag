@@ -42,20 +42,20 @@ used by ok, fail and skip. The structure of the when-result block is
 similar to condp (and _is_ a condp under the hood).
 
     (ns your.namespace
-      (:require [beanbag.core :refer :all]))
+      (:require [beanbag.core :as bb]))
     
     (defn some-fn-that-might-fail [arg]
       (if (even? arg)
-        (ok (* arg 3))
-        (fail "I only like even numbers")))
+        (bb/ok (* arg 3))
+        (bb/fail "I only like even numbers")))
 
     (defn other-fn [arg]
       (if (nil? arg)
-        (skip :not-ready "Arg was nil, must not be ready yet.")
-        (ok (inc arg))))
+        (bb/skip :not-ready "Arg was nil, must not be ready yet.")
+        (bb/ok (inc arg))))
 
     (defn careful-fn [f arg]
-      (when-result res (f arg)
+      (bb/cond-result res (f arg)
         :ok (println "Call succeeded and returned " res)
         :fail (println "Call failed. Reason: " res)
         :not-ready (println "Fn wasn't ready, try again later")))
@@ -65,7 +65,7 @@ similar to condp (and _is_ a condp under the hood).
     (careful-fn other-fn nil) ;              => prints "Fn wasn't ready, try again later"
     (careful-fn other-fn 4) ;                => prints 5
 
-The when-result block returns the your function's result if the function
+The cond-result block returns the your function's result if the function
 succeeds, or nil if the function fails.
 
 Footnote: Use the (beanbag? coll) predicate to check whether a given data structure
