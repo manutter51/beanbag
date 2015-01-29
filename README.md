@@ -37,8 +37,8 @@ your own custom status keys, as the first argument to ok, fail, or skip. Success
 statuses should begin with ":ok-", but fail and skip can use any status keys
 that you like (as long as they don't start with "ok-").
 
-Wrap your function call inside a when-result block to read the status keys
-used by ok, fail and skip. The structure of the when-result block is
+Wrap your function call inside a cond-result block to read the status keys
+used by ok, fail and skip. The structure of the cond-result block is
 similar to condp (and _is_ a condp under the hood).
 
     (ns your.namespace
